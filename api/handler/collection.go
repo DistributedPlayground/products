@@ -1,6 +1,10 @@
 package handler
 
 import (
+	"net/http"
+
+	"github.com/DistributedPlayground/go-lib/httperror"
+	"github.com/DistributedPlayground/products/pkg/model"
 	"github.com/DistributedPlayground/products/pkg/service"
 	"github.com/labstack/echo/v4"
 )
@@ -18,4 +22,41 @@ type collection struct {
 
 func NewCollection(service service.Collection) Collection {
 	return &collection{service: service}
+}
+
+func (c collection) Create(ctx echo.Context) error {
+	body := model.CollectionUpsert{}
+	err := ctx.Bind(&body)
+	if err != nil {
+		return httperror.BadRequest400(ctx)
+	}
+
+	collection, err := c.service.Create(ctx.Request().Context(), body)
+	if err != nil {
+		return httperror.Internal500(ctx)
+	}
+	return ctx.JSON(http.StatusCreated, collection)
+}
+
+func (c collection) Update(ctx echo.Context) error {
+	body := model.CollectionUpsert{}
+	err := ctx.Bind(&body)
+	if err != nil {
+		return httperror.BadRequest400(ctx)
+	}
+
+	err = c.service.Update(ctx.Request().Context(), ctx.Param("id"), body)
+	if err != nil {
+		return httperror.Internal500(ctx)
+	}
+	return ctx.NoContent(http.StatusNoContent)
+}
+
+func (c collection) RegisterRoutes(g *echo.Group, ms ...echo.MiddlewareFunc) {
+	if g == nil {
+		panic("no group attached to the collection handler")
+	}
+	c.Group = g
+	g.POST("", c.Create, ms...)
+	g.PUT("/:id", c.Update, ms...)
 }

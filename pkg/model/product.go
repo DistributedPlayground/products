@@ -14,7 +14,7 @@ type Product struct {
 	CollectionId string     `json:"collectionId" db:"collection_id"`
 }
 
-type ProductUpdates struct {
+type ProductUpsert struct {
 	Name         *string  `json:"name" db:"name"`
 	Description  *string  `json:"description" db:"description"`
 	Price        *float64 `json:"price" db:"price"`

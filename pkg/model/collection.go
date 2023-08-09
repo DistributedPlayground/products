@@ -11,7 +11,7 @@ type Collection struct {
 	Description string     `json:"description" db:"description"`
 }
 
-type CollectionUpdates struct {
-	Name        *string `json:"name" db:"name"`
-	Description *string `json:"description" db:"description"`
+type CollectionUpsert struct {
+	Name        *string `json:"name,omitempty" db:"name"`
+	Description *string `json:"description,omitempty" db:"description"`
 }

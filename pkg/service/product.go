@@ -8,6 +8,8 @@ import (
 )
 
 type Product interface {
+	Create(ctx context.Context, request model.ProductUpsert) (model.Product, error)
+	Update(ctx context.Context, id string, updates model.ProductUpsert) error
 }
 
 type product struct {
@@ -18,7 +20,7 @@ func NewProduct(repo repository.Product) Product {
 	return &product{repo: repo}
 }
 
-func (c product) Create(ctx context.Context, request model.Product) (model.Product, error) {
+func (c product) Create(ctx context.Context, request model.ProductUpsert) (model.Product, error) {
 	product, err := c.repo.Create(ctx, request)
 	if err != nil {
 		return model.Product{}, err
@@ -27,7 +29,7 @@ func (c product) Create(ctx context.Context, request model.Product) (model.Produ
 	return product, nil
 }
 
-func (c product) Update(ctx context.Context, id string, updates model.ProductUpdates) error {
+func (c product) Update(ctx context.Context, id string, updates model.ProductUpsert) error {
 	err := c.repo.Update(ctx, id, updates)
 	if err != nil {
 		return err

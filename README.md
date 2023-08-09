@@ -33,8 +33,3 @@ For my first project, I'll create an ecommerce platform. This platform will allo
 - **Inventory**: gRPC for internal use, redis k/v store
 - **Orders**: Orchestrator for *Payments*, *Fufillment*, and *Notifications*, state management with kafka
 - **Order Recovery**
-
-
-# To use
-
-`go run github.com/99designs/gqlgen generate`

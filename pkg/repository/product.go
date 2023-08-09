@@ -10,7 +10,7 @@ import (
 
 type Product interface {
 	database.Transactable
-	Create(ctx context.Context, product model.Product) (model.Product, error)
+	Create(ctx context.Context, product model.ProductUpsert) (model.Product, error)
 	Update(ctx context.Context, id string, updates any) error
 }
 
@@ -22,10 +22,10 @@ func NewProduct(db database.Queryable) Product {
 	return &product[model.Product]{Base[model.Product]{Store: db, Table: "product"}}
 }
 
-func (c product[T]) Create(ctx context.Context, product model.Product) (model.Product, error) {
+func (c product[T]) Create(ctx context.Context, request model.ProductUpsert) (product model.Product, err error) {
 	query, args, err := c.Named(`
 		INSERT INTO product (name, description, inventory, price, collection_id)
-		VALUES (:name, :description, :inventory, :price, :collection_id) RETURNING *`, product)
+		VALUES (:name, :description, :inventory, :price, :collection_id) RETURNING *`, request)
 
 	if err != nil {
 		return model.Product{}, err
