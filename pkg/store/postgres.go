@@ -6,6 +6,7 @@ import (
 	"github.com/DistributedPlayground/go-lib/common"
 	"github.com/DistributedPlayground/products/config"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 var pgDB *sqlx.DB

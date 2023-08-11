@@ -5,8 +5,8 @@ go 1.19
 require (
 	github.com/DistributedPlayground/go-lib v0.0.0-20230808192434-36df42e0db10
 	github.com/jmoiron/sqlx v1.3.5
-	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.11.1
+	github.com/lib/pq v1.2.0
 	github.com/rs/zerolog v1.30.0
 )
 
