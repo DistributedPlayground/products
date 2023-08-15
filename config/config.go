@@ -7,7 +7,6 @@ type vars struct {
 	AWS_REGION            string `required:"false"`
 	AWS_KMS_KEY_ID        string `required:"false"`
 	DEBUG_MODE            string `required:"false"`
-	SERVICE_NAME          string `required:"false"`
 	BASE_URL              string `required:"true"`
 	ENV                   string `required:"true"`
 	PORT                  string `required:"true"`
