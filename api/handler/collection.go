@@ -45,11 +45,11 @@ func (c collection) Update(ctx echo.Context) error {
 		return httperror.BadRequest400(ctx)
 	}
 
-	err = c.service.Update(ctx.Request().Context(), ctx.Param("id"), body)
+	collection, err := c.service.Update(ctx.Request().Context(), ctx.Param("id"), body)
 	if err != nil {
 		return httperror.Internal500(ctx)
 	}
-	return ctx.NoContent(http.StatusNoContent)
+	return ctx.JSON(http.StatusOK, collection)
 }
 
 func (c collection) RegisterRoutes(g *echo.Group, ms ...echo.MiddlewareFunc) {

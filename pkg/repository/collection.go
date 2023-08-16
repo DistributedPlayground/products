@@ -11,7 +11,7 @@ import (
 type Collection interface {
 	database.Transactable
 	Create(ctx context.Context, collection model.CollectionUpsert) (model.Collection, error)
-	Update(ctx context.Context, id string, updates any) error
+	Update(ctx context.Context, id string, updates any) (model.Collection, error)
 }
 
 type collection[T any] struct {

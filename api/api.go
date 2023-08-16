@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog"
@@ -13,6 +14,7 @@ import (
 
 type APIConfig struct {
 	DB     *sqlx.DB
+	KP     *kafka.Producer
 	Logger *zerolog.Logger
 	Port   string
 }
@@ -27,8 +29,9 @@ func Start(config APIConfig) {
 
 	e.GET("/heartbeat", heartbeat)
 
-	repos := NewRepos(config)
-	services := NewServices(config, repos)
+	repos := NewRepos(config.DB)
+	messages := NewMessages(config.KP)
+	services := NewServices(repos, messages)
 
 	collectionRoute(services, e)
 	productRoute(services, e)

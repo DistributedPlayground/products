@@ -100,17 +100,21 @@ func (b Base[T]) ListByUserId(ctx context.Context, userId string, limit int, off
 	return list, nil
 }
 
-func (b Base[T]) Update(ctx context.Context, id string, updates any) error {
+func (b Base[T]) Update(ctx context.Context, id string, updates any) (updated T, err error) {
 	names, keyToUpdate := common.KeysAndValues(updates)
 	if len(names) == 0 {
-		return errors.New("no fields to update")
+		return updated, errors.New("no fields to update")
 	}
 	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = '%s' AND deleted_at IS NULL", b.Table, strings.Join(names, ", "), id)
-	_, err := b.Store.NamedExecContext(ctx, query, keyToUpdate)
+	namedQuery, args, err := b.Named(query, keyToUpdate)
 	if err != nil {
-		return err
+		return updated, err
 	}
-	return err
+	err = b.Store.QueryRowxContext(ctx, namedQuery, args...).StructScan(&updated)
+	if err != nil {
+		return updated, err
+	}
+	return updated, err
 }
 
 func (b Base[T]) Deactivate(ctx context.Context, id string) error {

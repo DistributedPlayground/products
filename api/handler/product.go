@@ -45,11 +45,11 @@ func (p product) Update(ctx echo.Context) error {
 		return httperror.BadRequest400(ctx)
 	}
 
-	err = p.service.Update(ctx.Request().Context(), ctx.Param("id"), body)
+	product, err := p.service.Update(ctx.Request().Context(), ctx.Param("id"), body)
 	if err != nil {
 		return httperror.Internal500(ctx)
 	}
-	return ctx.NoContent(http.StatusNoContent)
+	return ctx.JSON(http.StatusOK, product)
 }
 
 func (p product) RegisterRoutes(g *echo.Group, ms ...echo.MiddlewareFunc) {

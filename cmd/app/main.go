@@ -25,8 +25,11 @@ func main() {
 
 	db := store.MustNewPG()
 
+	kp := store.MustNewKafka()
+
 	api.Start(api.APIConfig{
 		DB:     db,
+		KP:     kp,
 		Port:   port,
 		Logger: &lg,
 	})

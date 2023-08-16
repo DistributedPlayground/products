@@ -11,7 +11,7 @@ import (
 type Product interface {
 	database.Transactable
 	Create(ctx context.Context, product model.ProductUpsert) (model.Product, error)
-	Update(ctx context.Context, id string, updates any) error
+	Update(ctx context.Context, id string, updates any) (model.Product, error)
 }
 
 type product[T any] struct {
