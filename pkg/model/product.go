@@ -1,6 +1,8 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type Product struct {
 	Id           string     `json:"id" db:"id"`
@@ -10,14 +12,14 @@ type Product struct {
 	Name         string     `json:"name" db:"name"`
 	Description  string     `json:"description" db:"description"`
 	Price        float64    `json:"price" db:"price"`
-	Quantity     int        `json:"quantity" db:"quantity"`
-	CollectionId string     `json:"collectionId" db:"collection_id"`
+	Inventory    int        `json:"inventory" db:"inventory"`
+	CollectionId *string    `json:"collectionId,omitempty" db:"collection_id"`
 }
 
 type ProductUpsert struct {
 	Name         *string  `json:"name" db:"name"`
 	Description  *string  `json:"description" db:"description"`
 	Price        *float64 `json:"price" db:"price"`
-	Quantity     *int     `json:"quantity" db:"quantity"`
+	Inventory    *int     `json:"inventory" db:"inventory"`
 	CollectionId *string  `json:"collectionId" db:"collection_id"`
 }

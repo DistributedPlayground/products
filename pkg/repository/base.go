@@ -108,9 +108,11 @@ func (b Base[T]) ListByUserId(ctx context.Context, userId string, limit int, off
 func (b Base[T]) Update(ctx context.Context, id string, updates any) (updated T, err error) {
 	names, keyToUpdate := common.KeysAndValues(updates)
 	if len(names) == 0 {
-		return updated, errors.New("no fields to update")
+		return updated, common.DPError(errors.New("no fields to update"))
 	}
-	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = '%s' AND deleted_at IS NULL", b.Table, strings.Join(names, ", "), id)
+	keyToUpdate["id"] = id
+
+	query := fmt.Sprintf("UPDATE %s SET %s WHERE id =:id RETURNING *", b.Table, strings.Join(names, ","))
 	namedQuery, args, err := b.Named(query, keyToUpdate)
 	if err != nil {
 		return updated, common.DPError(err)
