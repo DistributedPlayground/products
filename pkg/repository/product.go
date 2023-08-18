@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 
+	"github.com/DistributedPlayground/go-lib/common"
 	"github.com/DistributedPlayground/go-lib/database"
 
 	"github.com/DistributedPlayground/products/pkg/model"
@@ -28,12 +29,12 @@ func (c product[T]) Create(ctx context.Context, request model.ProductUpsert) (pr
 		VALUES (:name, :description, :inventory, :price, :collection_id) RETURNING *`, request)
 
 	if err != nil {
-		return model.Product{}, err
+		return model.Product{}, common.DPError(err)
 	}
 
 	err = c.Store.QueryRowxContext(ctx, query, args...).StructScan(&product)
 	if err != nil {
-		return model.Product{}, err
+		return model.Product{}, common.DPError(err)
 	}
 
 	return product, nil

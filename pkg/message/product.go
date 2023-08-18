@@ -2,9 +2,11 @@ package message
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
-	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/DistributedPlayground/go-lib/common"
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/segmentio/ksuid"
 )
 
@@ -29,7 +31,7 @@ func (p product) Send(value interface{}, messageType string) error {
 
 	valueJSON, err := json.Marshal(value)
 	if err != nil {
-		return err
+		return common.DPError(err)
 	}
 
 	msg := kafka.Message{
@@ -46,10 +48,14 @@ func (p product) Send(value interface{}, messageType string) error {
 		Value: []byte(messageType),
 	})
 
+	// Calculate the size of the message payload in bytes
+	messageSize := len([]byte(valueJSON))
+	fmt.Printf("Message size: %d bytes\n", messageSize)
+
 	// Produce the message to the Kafka topic
 	err = p.kp.Produce(&msg, nil)
 	if err != nil {
-		return err
+		return common.DPError(err)
 	}
 
 	return nil

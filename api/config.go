@@ -4,7 +4,7 @@ import (
 	"github.com/DistributedPlayground/products/pkg/message"
 	"github.com/DistributedPlayground/products/pkg/repository"
 	"github.com/DistributedPlayground/products/pkg/service"
-	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/jmoiron/sqlx"
 )
 

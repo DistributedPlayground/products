@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 
+	"github.com/DistributedPlayground/go-lib/common"
 	"github.com/DistributedPlayground/go-lib/database"
 
 	"github.com/DistributedPlayground/products/pkg/model"
@@ -28,12 +29,12 @@ func (c collection[T]) Create(ctx context.Context, request model.CollectionUpser
 		VALUES (:name, :description) RETURNING *`, request)
 
 	if err != nil {
-		return model.Collection{}, err
+		return model.Collection{}, common.DPError(err)
 	}
 
 	err = c.Store.QueryRowxContext(ctx, query, args...).StructScan(&collection)
 	if err != nil {
-		return model.Collection{}, err
+		return model.Collection{}, common.DPError(err)
 	}
 
 	return collection, nil

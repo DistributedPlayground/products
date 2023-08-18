@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"github.com/DistributedPlayground/go-lib/common"
 	"github.com/DistributedPlayground/products/pkg/message"
 	"github.com/DistributedPlayground/products/pkg/model"
 	"github.com/DistributedPlayground/products/pkg/repository"
@@ -25,13 +26,13 @@ func NewProduct(repo repository.Product, message message.Product) Product {
 func (c product) Create(ctx context.Context, request model.ProductUpsert) (model.Product, error) {
 	product, err := c.repo.Create(ctx, request)
 	if err != nil {
-		return model.Product{}, err
+		return model.Product{}, common.DPError(err)
 	}
 
 	// Send to Kafka
 	err = c.message.Send(product, "Create")
 	if err != nil {
-		return product, err
+		return product, common.DPError(err)
 	}
 
 	return product, nil
@@ -40,13 +41,13 @@ func (c product) Create(ctx context.Context, request model.ProductUpsert) (model
 func (c product) Update(ctx context.Context, id string, updates model.ProductUpsert) (model.Product, error) {
 	product, err := c.repo.Update(ctx, id, updates)
 	if err != nil {
-		return product, err
+		return product, common.DPError(err)
 	}
 
 	// Send to Kafka
 	err = c.message.Send(product, "Update")
 	if err != nil {
-		return product, err
+		return product, common.DPError(err)
 	}
 
 	return product, nil
