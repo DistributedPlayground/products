@@ -1,3 +1,44 @@
+# Products
+The Products service is a [REST](https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm) API containerized with [Docker](https://www.docker.com/). 
+It allows stores to manage their products and product collections.
+
+- [Architecture](#architecture)
+- [Endpoint Description](#endpoints)
+- [Running the Service](#running)
+- [Testing the Service](#testing)
+
+## Architecture
+I chose a REST architecture for this service because the stores will only be doing CRUD operations on their own products and collections. More complex queries are not necessary for this use case, so GraphQL would not be beneficial. 
+
+### Endpoints:
+| Method | Endpoint        | Description                                              | Request Body       | Path Parameters | 
+|--------|-----------------|----------------------------------------------------------|--------------------|-----------------|
+| GET    | `/heartbeat`    | Checks the service's heartbeat.                          | None               | None            |
+| POST   | `/collection`   | Creates a new collection.                                | JSON (Collection)  | None            |
+| PUT    | `/collection/:id` | Updates an existing collection by ID.                   | JSON (Collection)  | `id`: Collection ID |
+| POST   | `/product`      | Creates a new product.                                   | JSON (Product)     | None            |
+| PUT    | `/product/:id`  | Updates an existing product by ID.                        | JSON (Product)     | `id`: Product ID    |
+
+
+#### Request Body Examples:
+
+- JSON (Collection):
+```json
+{
+  "name": "Spring Collection",
+  "description": "New arrivals for the Spring season."
+}
+```
+
+- 
+```json
+{
+  "name": "Floral Dress",
+  "description": "A beautiful floral dress.",
+  "price": 29.99
+}
+```
+
 # Distributed Playground
 The purpose of this repo is to practice the development of distributed systems
 ## Project 1 - Ecommerce Platform
